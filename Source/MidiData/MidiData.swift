@@ -45,6 +45,21 @@ public final class MidiData {
         return MidiTime(inSeconds: timeStampInSeconds.roundTo(places: 2), inTicks: maxMidiNote.timeStamp.inTicks + maxMidiNote.duration.inTicks)
     }
     
+    public var durationInSeconds: Double {
+        //gets max note duration in seconds
+        func getMaxNote(inTracks tracks: [MidiNoteTrack]) -> MidiNote? {
+            return noteTracks.compactMap { $0.last }.max { $0.timeStamp.inSeconds < $1.timeStamp.inSeconds }
+        }
+
+        //if the max note doesn't exist, then the track isn't used so the value of the duration of the track is 0
+        guard let maxMidiNote = getMaxNote(inTracks: noteTracks) else {
+            return 0
+        }
+            
+        let timeStampInSeconds = maxMidiNote.timeStamp.inSeconds + maxMidiNote.duration.inSeconds
+        return timeStampInSeconds.roundTo(places: 2)
+    }
+    
     public lazy var beatsPerMinute: BeatsPerMinute = {
         if tempoTrack.extendedTempos.isEmpty {
             return BeatsPerMinute.regular
