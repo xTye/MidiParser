@@ -43,5 +43,13 @@ extension MidiNote {
     func convert() -> MIDINoteMessage {
         return MIDINoteMessage(channel: channel, note: note, velocity: velocity, releaseVelocity: releaseVelocity, duration: Float32(duration.inSeconds))
     }
+    
+    func getNotePitch() -> UInt8 {
+        return self.note
+    }
+    
+    func getNoteVelocity() -> UInt8 {
+        return self.velocity
+    }
 
 }
