@@ -32,7 +32,7 @@ public struct MidiNote {
         
         //sets the public variable to the MidiTime
         self.timeStamp = MidiTime(inSeconds: timeStampInTicks.toMs(forBeatsPerMinute: beatsPerMinute, andTicksPerBeat: ticksPerBeat).seconds, inTicks: timeStampInTicks)
-        self.timeStampInSeconds = timeStamp.inSeconds
+        self.timeStampInSeconds = timeStampInTicks.toMs(forBeatsPerMinute: beatsPerMinute, andTicksPerBeat: ticksPerBeat).seconds
         self.duration = MidiTime(inSeconds: durationInTicks.toMs(forBeatsPerMinute: beatsPerMinute, andTicksPerBeat: ticksPerBeat).seconds, inTicks: durationInTicks)
         self.note = note
         self.velocity = velocity
