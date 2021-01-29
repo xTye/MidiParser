@@ -213,6 +213,7 @@ extension MidiNoteTrack {
             switch eventType {
             case .noteMessage:
                 let noteMessage = eventData.load(as: MIDINoteMessage.self)
+                //Makes a note, and calls the constructor MidiNote
                 let note = MidiNote(regularTimeStamp: eventInfo.timeStamp,
                                     regularDuration: noteMessage.duration,
                                     note: noteMessage.note,

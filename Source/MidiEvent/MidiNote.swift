@@ -22,15 +22,17 @@ public struct MidiNote {
     public let channel: UInt8
     public let releaseVelocity: UInt8
 
-    public init(regularTimeStamp: MusicTimeStamp, regularDuration: Float32, timeStampInSeconds: Float64, note: UInt8, velocity: UInt8, channel: UInt8, releaseVelocity: UInt8 = 0, beatsPerMinute: BeatsPerMinute = BeatsPerMinute.regular, ticksPerBeat: TicksPerBeat = TicksPerBeat.regular) {
+    public init(regularTimeStamp: MusicTimeStamp, regularDuration: Float32, note: UInt8, velocity: UInt8, channel: UInt8, releaseVelocity: UInt8 = 0, beatsPerMinute: BeatsPerMinute = BeatsPerMinute.regular, ticksPerBeat: TicksPerBeat = TicksPerBeat.regular) {
         let timeStampInTicks = Milliseconds(regularTimeStamp).toTicks(andTicksPerBeat: ticksPerBeat)
         let durationInTicks = Milliseconds(Double(regularDuration)).toTicks(andTicksPerBeat: ticksPerBeat)
         
+        //sets the private variable to the constructr parameter
         self.regularTempoTimeStamp = regularTimeStamp
         self.regularDuration = regularDuration
         
+        //sets the public variable to the MidiTime
         self.timeStamp = MidiTime(inSeconds: timeStampInTicks.toMs(forBeatsPerMinute: beatsPerMinute, andTicksPerBeat: ticksPerBeat).seconds, inTicks: timeStampInTicks)
-        self.timeStampInSeconds = Float64(timeStamp.inSeconds)
+        self.timeStampInSeconds = timeStamp.inSeconds
         self.duration = MidiTime(inSeconds: durationInTicks.toMs(forBeatsPerMinute: beatsPerMinute, andTicksPerBeat: ticksPerBeat).seconds, inTicks: durationInTicks)
         self.note = note
         self.velocity = velocity
