@@ -15,17 +15,19 @@ public struct MidiNote {
     private let regularDuration: Float32
     
     public let timeStamp: MidiTime
+    public let timeStampInSeconds: Float64
     public let duration: MidiTime
     public let note: UInt8
     public let velocity: UInt8
     public let channel: UInt8
     public let releaseVelocity: UInt8
 
-    public init(regularTimeStamp: MusicTimeStamp, regularDuration: Float32, note: UInt8, velocity: UInt8, channel: UInt8, releaseVelocity: UInt8 = 0, beatsPerMinute: BeatsPerMinute = BeatsPerMinute.regular, ticksPerBeat: TicksPerBeat = TicksPerBeat.regular) {
+    public init(regularTimeStamp: MusicTimeStamp, timeStampInSeconds: Float64, regularDuration: Float32, note: UInt8, velocity: UInt8, channel: UInt8, releaseVelocity: UInt8 = 0, beatsPerMinute: BeatsPerMinute = BeatsPerMinute.regular, ticksPerBeat: TicksPerBeat = TicksPerBeat.regular) {
         let timeStampInTicks = Milliseconds(regularTimeStamp).toTicks(andTicksPerBeat: ticksPerBeat)
         let durationInTicks = Milliseconds(Double(regularDuration)).toTicks(andTicksPerBeat: ticksPerBeat)
         
         self.regularTempoTimeStamp = regularTimeStamp
+        self.timeStampInSeconds = timeStampInSeconds
         self.regularDuration = regularDuration
         
         self.timeStamp = MidiTime(inSeconds: timeStampInTicks.toMs(forBeatsPerMinute: beatsPerMinute, andTicksPerBeat: ticksPerBeat).seconds, inTicks: timeStampInTicks)
@@ -43,13 +45,4 @@ extension MidiNote {
     func convert() -> MIDINoteMessage {
         return MIDINoteMessage(channel: channel, note: note, velocity: velocity, releaseVelocity: releaseVelocity, duration: Float32(duration.inSeconds))
     }
-    
-    func getNotePitch() -> UInt8 {
-        return self.note
-    }
-    
-    func getNoteVelocity() -> UInt8 {
-        return self.velocity
-    }
-
 }
